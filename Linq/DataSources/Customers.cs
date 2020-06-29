@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace random_stuff
+namespace random_stuff.Linq.DataSources
 {
     public class Customer
     {

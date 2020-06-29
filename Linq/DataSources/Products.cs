@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace random_stuff
+namespace random_stuff.Linq.DataSources
 {
     public class Product
     {

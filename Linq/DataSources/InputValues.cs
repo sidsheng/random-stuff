@@ -1,5 +1,5 @@
 
-namespace random_stuff
+namespace random_stuff.Linq.DataSources
 {
     public static class InputValues
     {
