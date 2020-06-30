@@ -6,6 +6,12 @@ using random_stuff.Linq.DataSources;
 
 namespace random_stuff.Linq
 {
+    class PetOwner
+{
+    public string Name { get; set; }
+    public List<string> Pets { get; set; }
+}
+
     public class Projections
     {
         public List<Product> GetProductList() => Products.ProductList;
@@ -23,7 +29,9 @@ namespace random_stuff.Linq
             //SelectSingle();
             //Transform();
             //SelectAnonymousAndTuples();
-            SelectSubset();
+            //SelectSubset();
+            //SelectWithIndex();
+            SelectFromMultiple();
         }
 
         private void SelectSimple()
@@ -137,6 +145,52 @@ namespace random_stuff.Linq
             foreach (var productInfo in productInfos)
             {
                 Console.WriteLine($"{productInfo.ProductName} is in the category {productInfo.Category} and costs {productInfo.Price} per unit.");
+            }
+        }
+
+        private void SelectWithIndex()
+        {
+            int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+            string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+
+            var numsInPlace = numbers.
+                Select((num, index) => (Num: num, InPlace: (num == index)));
+
+            Console.WriteLine("Number: In place?");
+            foreach (var n in numsInPlace)
+            {
+                Console.WriteLine($"{n.Num}: {n.InPlace}");
+            }
+
+            var lowNums = from n in numbers
+                where n < 5
+                select digits[n];
+
+            Console.WriteLine("Numbers < 5:");
+            foreach (var n in lowNums)
+            {
+                Console.WriteLine(n);
+            }
+        }
+
+        private void SelectFromMultiple()
+        {
+            int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
+            int[] numbersB = { 1, 3, 5, 7, 8 };
+
+            var pairs = from a in numbersA
+                from b in numbersB
+                where a < b
+                select (a, b);
+                
+            var pairs1 = numbersA.SelectMany(a => numbersB, (a, b) => new {a, b}).
+                Where(ab => (ab.a < ab.b)).
+                Select(ab => (ab.a, ab.b));
+
+            Console.WriteLine("Pairs where a < b:");
+            foreach (var pair in pairs)
+            {
+                Console.WriteLine($"{pair.a} is less than {pair.b}");
             }
         }
     }
