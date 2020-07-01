@@ -25,13 +25,16 @@ namespace random_stuff.Linq
 
         public void RunTests()
         {
-            //SelectSimple();
-            //SelectSingle();
-            //Transform();
-            //SelectAnonymousAndTuples();
-            //SelectSubset();
-            //SelectWithIndex();
+            SelectSimple();
+            SelectSingle();
+            Transform();
+            SelectAnonymousAndTuples();
+            SelectSubset();
+            SelectWithIndex();
             SelectFromMultiple();
+            SelectFromRelated();
+            CompoundSelectMultipleWhere();
+            CompoundSelectWithIndex();
         }
 
         private void SelectSimple()
@@ -182,7 +185,7 @@ namespace random_stuff.Linq
                 from b in numbersB
                 where a < b
                 select (a, b);
-                
+
             var pairs1 = numbersA.SelectMany(a => numbersB, (a, b) => new {a, b}).
                 Where(ab => (ab.a < ab.b)).
                 Select(ab => (ab.a, ab.b));
@@ -191,6 +194,79 @@ namespace random_stuff.Linq
             foreach (var pair in pairs)
             {
                 Console.WriteLine($"{pair.a} is less than {pair.b}");
+            }
+        }
+
+        private void SelectFromRelated()
+        {
+            List<Customer> customers = GetCustomerList();
+            var ordersTotal =
+                from c in customers
+                from o in c.Orders
+                where o.Total < 500.00M
+                select (c.CustomerID, o.OrderID, o.Total);
+
+            var ordersTotal1 = customers.
+                SelectMany(c => c.Orders, (c, o) => (c, o)).
+                Where(co => (co.o.Total < 500.00M)).
+                Select(co => (co.c.CustomerID, co.o.OrderID, co.o.Total));
+
+            foreach (var order in ordersTotal)
+            {
+                Console.WriteLine($"Customer: {order.CustomerID}, Order: {order.OrderID}, Total value: {order.Total}");
+            }
+
+            var ordersDate =
+                from c in customers
+                from o in c.Orders
+                where o.OrderDate >= new DateTime(1998, 1, 1)
+                select (c.CustomerID, o.OrderID, o.OrderDate);
+
+            var ordersDate1 = customers.
+                SelectMany(c => c.Orders, (c, o) => (c, o)).
+                Where(co => co.o.OrderDate >= new DateTime(1998, 1, 1)).
+                Select(co => (co.c.CustomerID, co.o.OrderID, co.o.OrderDate));
+
+            foreach (var order in ordersDate)
+            {
+                Console.WriteLine($"Customer: {order.CustomerID}, Order: {order.OrderID}, Total date: {order.OrderDate.ToShortDateString()}");
+            }
+        }
+
+        private void CompoundSelectMultipleWhere()
+        {
+            List<Customer> customers = GetCustomerList();
+            DateTime cutoffDate = new DateTime(1997, 1, 1);
+            var orders =
+                from c in customers
+                where c.Region == "WA"
+                from o in c.Orders
+                where o.OrderDate >= cutoffDate
+                select (c.CustomerID, o.OrderID);
+            
+            var orders1 = customers.Where(c => c.Region == "WA").
+                SelectMany(c => c.Orders, (c, o) => (c, o)).
+                Where(co => co.o.OrderDate >= cutoffDate).
+                Select(co => (co.c.CustomerID, co.o.OrderID));
+
+            foreach (var order in orders)
+            {
+                Console.WriteLine($"Customer: {order.CustomerID}, Order: {order.OrderID}");
+            }
+        }
+
+        public void CompoundSelectWithIndex()
+        {
+            List<Customer> customers = GetCustomerList();
+            var customerOrders =
+                customers.SelectMany(
+                    (cust, custIndex) =>
+                    cust.Orders.Select(o => "Customer #" + (custIndex + 1) +
+                    " has an order with OrderID " + o.OrderID));
+
+            foreach (var order in customerOrders)
+            {
+                Console.WriteLine(order);
             }
         }
     }
