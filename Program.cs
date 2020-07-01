@@ -8,8 +8,8 @@ namespace random_stuff
     {
         static void Main(string[] args)
         {
-            var projections = new Projections();
-            projections.RunTests();
+            var test = new Partitions();
+            test.RunTests();
         }
     }
 }

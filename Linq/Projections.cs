@@ -6,12 +6,6 @@ using random_stuff.Linq.DataSources;
 
 namespace random_stuff.Linq
 {
-    class PetOwner
-{
-    public string Name { get; set; }
-    public List<string> Pets { get; set; }
-}
-
     public class Projections
     {
         public List<Product> GetProductList() => Products.ProductList;
