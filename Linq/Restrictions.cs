@@ -37,6 +37,9 @@ namespace random_stuff.Linq
             var lowNumbers1 = numbers.
                 Where(num => num < 5).
                 Select(num => num);
+            
+            var lowNumbers2 = numbers.Where(num => num < 5);
+            //var lowNumbers3 = numbers.Select(num => num < 5);
                                 
             Console.WriteLine("Numbers < 5:");
 

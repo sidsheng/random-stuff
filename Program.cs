@@ -8,7 +8,7 @@ namespace random_stuff
     {
         static void Main(string[] args)
         {
-            var test = new Partitions();
+            var test = new Ordering();
             test.RunTests();
         }
     }
