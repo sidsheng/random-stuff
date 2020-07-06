@@ -19,9 +19,9 @@ namespace random_stuff.Linq
 
         public void RunTests()
         {
-            //OrderBy();
-            //OrderByDescending();
-            //OrderMultiple();
+            OrderBy();
+            OrderByDescending();
+            OrderMultiple();
             ReverseSequence();
         }
 
@@ -34,6 +34,8 @@ namespace random_stuff.Linq
                 orderby word
                 select word;
 
+            var sortedWords1 = words.OrderBy(w => w);
+
             Console.WriteLine("The sorted list of words:");
             foreach (var w in sortedWords)
             {
@@ -44,6 +46,8 @@ namespace random_stuff.Linq
                 orderby word.Length
                 select word;
 
+            sortedWords1 = words.OrderBy(w => w.Length);
+
             Console.WriteLine("The sorted list of words (by length):");
             foreach (var w in sortedWords)
             {
@@ -52,7 +56,9 @@ namespace random_stuff.Linq
 
             var sortedProducts = from prod in products
                 orderby prod.ProductName
-                select prod; 
+                select prod;
+
+            var sortedProducts1 = products.OrderBy(p => p.ProductName);
 
             foreach (var product in sortedProducts)
             {
@@ -69,6 +75,8 @@ namespace random_stuff.Linq
                 orderby d descending
                 select d;
 
+            var sortedDoubles1 = doubles.OrderByDescending(d => d);
+
             Console.WriteLine("The doubles from highest to lowest:");
             foreach (var d in sortedDoubles)
             {
@@ -78,6 +86,8 @@ namespace random_stuff.Linq
             var sortedProducts = from prod in products
                 orderby prod.UnitsInStock descending
                 select prod;
+
+            var sortedProducts1 = products.OrderByDescending(p => p.UnitsInStock);
 
             foreach (var product in sortedProducts)
             {
@@ -94,6 +104,8 @@ namespace random_stuff.Linq
                 orderby digit.Length, digit
                 select digit;
 
+            var sortedDigits1 = digits.OrderBy(d => d.Length).ThenBy(d => d);
+
             Console.WriteLine("Sorted digits:");
             foreach (var d in sortedDigits)
             {
@@ -103,6 +115,9 @@ namespace random_stuff.Linq
             var sortedProducts = from prod in products
                 orderby prod.Category, prod.UnitPrice descending
                 select prod;
+
+            var sortedProducts1 = products.OrderBy(p => p.Category).
+                ThenByDescending(p => p.UnitPrice);
 
             foreach (var product in sortedProducts)
             {
@@ -117,7 +132,9 @@ namespace random_stuff.Linq
             var reversedIDigits = (from digit in digits
                 where digit[1] == 'i'
                 select digit).Reverse();
-            
+
+            var reversedIDigits1 = digits.Where(d => d[1] == 'i').Reverse();
+
             Console.WriteLine("A backwards list of the digits with a second character of 'i':");
             foreach (var d in reversedIDigits)
             {
