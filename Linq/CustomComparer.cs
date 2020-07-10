@@ -18,6 +18,7 @@ namespace random_stuff.Linq
         public void RunTests()
         {
             Ordering();
+            MultipleOrder();
         }
 
         private void Ordering()
@@ -32,6 +33,23 @@ namespace random_stuff.Linq
 
             sortedWords = words.OrderByDescending(a => a, new CaseInsensitiveComparer());
 
+            foreach (var word in sortedWords)
+            {
+                Console.WriteLine(word);
+            }
+        }
+
+        private void MultipleOrder()
+        {
+            string[] words = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
+            var sortedWords = words.OrderBy(a => a.Length).ThenBy(a => a, new CaseInsensitiveComparer());
+
+            foreach (var word in sortedWords)
+            {
+                Console.WriteLine(word);
+            }
+
+            sortedWords = words.OrderBy(a => a.Length).ThenByDescending(a => a, new CaseInsensitiveComparer());
             foreach (var word in sortedWords)
             {
                 Console.WriteLine(word);
