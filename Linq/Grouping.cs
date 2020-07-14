@@ -6,6 +6,20 @@ using random_stuff.Linq.DataSources;
 
 namespace random_stuff.Linq
 {
+    public class AnagramEqualityComparer : IEqualityComparer<string>
+    {
+        public bool Equals(string x, string y) => getCanonicalString(x) == getCanonicalString(y);
+
+        public int GetHashCode(string obj) => getCanonicalString(obj).GetHashCode();
+
+        private string getCanonicalString(string word)
+        {
+            char[] wordChars = word.ToCharArray();
+            Array.Sort<char>(wordChars);
+            return new string(wordChars);
+        }
+    }
+
     public class Grouping
     {
         public List<Product> GetProductList() => Products.ProductList;
@@ -23,6 +37,8 @@ namespace random_stuff.Linq
             GroupByProperty();
             GroupByKey();
             NestedGrouping();
+            GroupCustomComparer();
+            GroupCustomComparerNested();
         }
 
         private void GroupIntoBuckets()
@@ -108,6 +124,42 @@ namespace random_stuff.Linq
                             Console.WriteLine($"\t\t\tOrder: {order}");
                         }
                     }
+                }
+            }
+        }
+
+        private void GroupCustomComparer()
+        {
+            string[] anagrams = { "from   ", " salt", " earn ", "  last   ", " near ", " form  " };
+            var orderGroups = anagrams.GroupBy(w => w.Trim(), new AnagramEqualityComparer());
+
+            foreach (var set in orderGroups)
+            {
+                // The key would be the first item in the set
+                foreach (var word in set)
+                {
+                    Console.WriteLine(word);
+                }
+                Console.WriteLine("...");
+            }
+        }
+
+        private void GroupCustomComparerNested()
+        {
+            string[] anagrams = { "from   ", " salt", " earn ", "  last   ", " near ", " form  " };
+            var orderGroups = anagrams.GroupBy(
+                w => w.Trim(),
+                a => a.ToUpper(),
+                new AnagramEqualityComparer()
+            );
+
+            foreach (var set in orderGroups)
+            {
+                Console.WriteLine(set.GetType());
+                Console.WriteLine(set.Key);
+                foreach (var word in set)
+                {
+                    Console.WriteLine($"\t{word}");
                 }
             }
         }
