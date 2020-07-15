@@ -23,6 +23,10 @@ namespace random_stuff.Linq
             FindDistinctCategories();
             SetUnion();
             SetUnionProductCompany();
+            SetIntersect();
+            SetIntersectProductCategories();
+            SetExcept();
+            SetExceptProductCategories();
         }
 
         private void FindDistinct()
@@ -77,6 +81,70 @@ namespace random_stuff.Linq
             var uniqueFirstChars = productFirstChars.Union(customerFirstChars);
             Console.WriteLine("Unique first letters from Product names and Customer names:");
             foreach (var ch in uniqueFirstChars)
+            {
+                Console.WriteLine(ch);
+            }
+        }
+
+        private void SetIntersect()
+        {
+            int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
+            int[] numbersB = { 1, 3, 5, 7, 8 };
+            var commonNumbers = numbersA.Intersect(numbersB);
+
+            Console.WriteLine("Common numbers shared by both arrays:");
+            foreach (var n in commonNumbers)
+            {
+                Console.WriteLine(n);
+            }
+        }
+
+        private void SetIntersectProductCategories()
+        {
+            List<Product> products = GetProductList();
+            List<Customer> customers = GetCustomerList();
+
+            var productFirstChars = from p in products
+                select p.ProductName[0];
+            var customerFirstchars = from c in customers
+                select c.CompanyName[0];
+            
+            var commonFirstChars = productFirstChars.Intersect(customerFirstchars);
+
+            Console.WriteLine("Common first letters from Product names and Customer names:");
+            foreach (var ch in commonFirstChars)
+            {
+                Console.WriteLine(ch);
+            }
+        }
+
+        private void SetExcept()
+        {
+            int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
+            int[] numbersB = { 1, 3, 5, 7, 8 };
+            var aOnlyNumbers = numbersA.Except(numbersB);
+
+            Console.WriteLine("Numbers in first array but not second array:");
+            foreach (var n in aOnlyNumbers)
+            {
+                Console.WriteLine(n);
+            }
+        }
+
+        private void SetExceptProductCategories()
+        {
+            List<Product> products = GetProductList();
+            List<Customer> customers = GetCustomerList();
+
+            var productFirstChars = from p in products
+                select p.ProductName[0];
+            var customerFirstchars = from c in customers
+                select c.CompanyName[0];
+            
+            var productOnlyFirstChars = productFirstChars.Except(customerFirstchars);
+
+            Console.WriteLine("First letters from Product names, but not from Customer names:");
+            foreach (var ch in productOnlyFirstChars)
             {
                 Console.WriteLine(ch);
             }

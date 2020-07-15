@@ -8,7 +8,7 @@ namespace random_stuff
     {
         static void Main(string[] args)
         {
-            var test = new Sets();
+            var test = new Element();
             test.RunTests();
         }
     }
