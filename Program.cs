@@ -1,6 +1,7 @@
 ﻿using System;
 
 using random_stuff.Linq;
+using random_stuff.CSharp7;
 
 namespace random_stuff
 {
@@ -8,7 +9,7 @@ namespace random_stuff
     {
         static void Main(string[] args)
         {
-            var test = new Join();
+            var test = new RefLocalsAndReturns();
             test.RunTests();
         }
     }
