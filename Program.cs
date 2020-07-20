@@ -8,7 +8,7 @@ namespace random_stuff
     {
         static void Main(string[] args)
         {
-            var test = new Aggregators();
+            var test = new Join();
             test.RunTests();
         }
     }

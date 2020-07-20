@@ -30,6 +30,8 @@ namespace random_stuff.Linq
             MinProjection();
             MinGroup();
             MinMatching();
+            AggregateProduct();
+            AggregateSeed();
         }
 
         private void DistinctCount()
@@ -107,6 +109,7 @@ namespace random_stuff.Linq
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
             int min = numbers.Min();
             int max = numbers.Max();
+            double avg = numbers.Average();
 
             Console.WriteLine(min);
         }
@@ -116,6 +119,7 @@ namespace random_stuff.Linq
             string[] words = { "cherry", "apple", "blueberry" };
             int shortestWord = words.Min(w => w.Length);
             int longestWord = words.Max(w => w.Length);
+            double averageLen = words.Average(w => w.Length);
 
             Console.WriteLine(shortestWord);
         }
@@ -130,6 +134,10 @@ namespace random_stuff.Linq
             var categories1 = from p in products
                 group p by p.Category into g
                 select (Category: g.Key, MostExpensivePrice: g.Max(p => p.UnitPrice));
+
+            var categories2 = from p in products
+                group p by p.Category into g
+                select (Category: g.Key, AveragePrice: g.Average(p => p.UnitPrice));
 
             foreach (var c in categories)
             {
@@ -158,6 +166,26 @@ namespace random_stuff.Linq
                     Console.WriteLine($"\tProduct: {p}");
                 }
             }
+        }
+
+        private void AggregateProduct()
+        {
+            double[] doubles = { 1.7, 2.3, 1.9, 4.1, 2.9 };
+            var product = doubles.Aggregate((runningProduct, nextFactor) => runningProduct * nextFactor);
+
+            Console.WriteLine($"Total product of all numbers: {product}");
+        }
+
+        private void AggregateSeed()
+        {
+            double startBalance = 100.0;
+            int[] attemptedWithdrawals = { 20, 10, 40, 50, 10, 70, 30 };
+            var endBalance =
+                attemptedWithdrawals.Aggregate(startBalance, 
+                    (startBalance, nextWithdrawal) =>
+                        ((nextWithdrawal < startBalance) ? (startBalance - nextWithdrawal) : startBalance));
+
+            Console.WriteLine($"Ending balance: {endBalance}");
         }
     }
 }
