@@ -2,7 +2,7 @@ using System;
 
 namespace random_stuff.CSharp7
 {
-    public struct Point3D
+    public readonly struct Point3D
     {
         private static Point3D origin = new Point3D(0, 0, 0);
 
@@ -12,21 +12,16 @@ namespace random_stuff.CSharp7
         public double Y { get; }
         public double Z { get; }
 
-        private double? distance;
-
         public Point3D(double x, double y, double z)
         {
             X = x;
             Y = y;
             Z = z;
-            distance = null;
         }
 
         public double ComputeDistance()
         {
-            if (!distance.HasValue)
-                distance = Math.Sqrt(X * X + Y * Y + Z * Z);
-            return distance.Value;
+            return Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
         public static Point3D Translate(in Point3D source, double dX, double dY, double dZ) =>

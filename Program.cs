@@ -9,7 +9,7 @@ namespace random_stuff
     {
         static void Main(string[] args)
         {
-            var test = new RefLocalsAndReturns();
+            var test = new Patterns();
             test.RunTests();
         }
     }
